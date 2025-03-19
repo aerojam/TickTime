@@ -1,7 +1,7 @@
 from smartwindow import SmartWindow
 import time
 
-class Clock(SmartWindow):
+class Timer(SmartWindow):
     def __init__(self, root):
         super().__init__(root)
         self.update_time()
