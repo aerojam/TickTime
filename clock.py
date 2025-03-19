@@ -1,55 +1,13 @@
-import tkinter as tk
 import time
-import json
-import os
-from pathlib import Path
+import tkinter as tk
 from tkinter import ttk
 from tkinter import font
+from settings import Settings
 
-
-
-class Settings:
-    def __init__(self):
-        self.data = {}
-        if os.name == 'nt':
-            self.settings_dir = Path.home() / os.getenv('APPDATA') / 'ticktime'
-        else:
-            self.settings_dir = Path.home() / '.config' / 'ticktime'
-        self.settings_file = self.settings_dir / 'settings.json'
-        self.load()
-
-    def get(self, key):
-        return self.data[key]
-    
-    def set(self, key, value):
-        self.data[key] = value
-
-    def save(self):
-        try:
-            with open(self.settings_file, "w") as f:
-                json.dump(self.data, f, indent=2, ensure_ascii=None)
-        except FileNotFoundError:
-            self.settings_dir.mkdir(parents=True, exist_ok=True)
-
-    def load(self):
-        try:
-            with open(self.settings_file, "r") as f:
-                self.data = json.load(f)
-        except Exception:
-            self.data = {}
-            self.set('title', 'TickTime')
-            self.set('geometry', '500x300+100+80')
-            self.set('fullscreen', False)
-            self.set('padding', 40)
-            self.set('scale', 1.0)
-            self.set('time_format', '%H:%M:%S')
-
-
-
-class TickTime:
+class Clock:
     def __init__(self, root):
         self.root = root
-        self.settings = Settings()
+        self.settings = Settings('clock')
         self.root.title(self.settings.get("title"))
         self.root.geometry(self.settings.get('geometry'))
         self.settings.set('fullscreen', False)
@@ -125,13 +83,3 @@ class TickTime:
             self.settings.set('geometry', self.root.geometry())
             self.settings.set('fullscreen', True)
             self.root.attributes('-fullscreen', True)
-        
-
-
-def main():
-    root = tk.Tk()
-    app = TickTime(root)
-    root.mainloop()
-
-if __name__ == "__main__":
-    main()
