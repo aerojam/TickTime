@@ -5,8 +5,8 @@ from tkinter import font
 from settings import Settings
 
 class SmartWindow:
-    def __init__(self, root):
-        self.root = root
+    def __init__(self):
+        self.root = tk.Tk()
         self.settings = Settings(self.__class__.__name__)
         self.root.title(self.settings.get("title"))
         self.root.geometry(self.settings.get('geometry'))
@@ -16,7 +16,7 @@ class SmartWindow:
         self.label.pack(pady=(20, 0))
         self.current_time_string = ''
         self.custom_display_font = font.Font(family=font.nametofont("TkFixedFont").actual("family"))
-        self.clock_label = ttk.Label(self.root, text=self.current_time_string, font=self.custom_display_font, padding=(self.settings.get('padding'), 20))
+        self.clock_label = ttk.Label(self.root, text=self.current_time_string, font=self.custom_display_font, padding=(5, 10))
         self.clock_label.pack(expand=True)
 
     def set_font_size_to_fit_window(self, event=None):

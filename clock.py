@@ -2,9 +2,10 @@ from smartwindow import SmartWindow
 import time
 
 class Clock(SmartWindow):
-    def __init__(self, root):
-        super().__init__(root)
+    def __init__(self):
+        super().__init__()
         self.update_time()
+        self.root.mainloop()
 
     def update_time_label(self):
         self.current_time_string = time.strftime(self.settings.get('time_format'))
