@@ -1,7 +1,7 @@
 from smartwindow import SmartWindow
 import time
 
-class Clock(SmartWindow):
+class CountDown(SmartWindow):
     def __init__(self):
         super().__init__()
         self.update_time()

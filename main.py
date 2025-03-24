@@ -1,11 +1,9 @@
-import tkinter as tk
+from main_window import MainWindow
 from clock import Clock
-from timer import Timer
 
 def main():
-    #root = tk.Tk()
-    clock_window = Clock()
-    # timer_window = Timer()
+    main_window = MainWindow()
+    main_window.root.mainloop()
 
 if __name__ == "__main__":
     main()

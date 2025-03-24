@@ -6,19 +6,25 @@ from settings import Settings
 
 class SmartWindow:
     def __init__(self):
-        self.root = tk.Tk()
+        #self.root = tk.Tk()
+        self.root = tk.Toplevel()
         self.settings = Settings(self.__class__.__name__)
         self.root.title(self.settings.get("title"))
         self.root.geometry(self.settings.get('geometry'))
         self.settings.set('fullscreen', False)
         self.bind_events()
-        self.label = ttk.Label(self.root, text="F or ESC to fullscreen, Q to exit, +/- to scale", font="TkDefaultFont")
+        self.label = ttk.Label(self.root, text="F to fullscreen, +/- to scale", font="TkDefaultFont")
         self.label.pack(pady=(20, 0))
         self.current_time_string = ''
         self.custom_display_font = font.Font(family=font.nametofont("TkFixedFont").actual("family"))
         self.clock_label = ttk.Label(self.root, text=self.current_time_string, font=self.custom_display_font, padding=(5, 10))
         self.clock_label.pack(expand=True)
+        self.update_font_size()
+        self.root.grab_set()
 
+    #
+    # Don't use this method -- bad approach:
+    #
     def set_font_size_to_fit_window(self, event=None):
         window_width = self.root.winfo_width() - 2 * self.settings.get('padding')
         font_size = 500
@@ -37,18 +43,28 @@ class SmartWindow:
             else:
                 font_size -= 6
 
+    def update_font_size(self, event=None):
+        new_font = font.Font(family=font.nametofont("TkFixedFont").actual("family"), size=24)
+        new_font_size = int(new_font.cget("size") * self.settings.get('scale'))
+        new_font.config(size=max(new_font_size, 6))
+        self.clock_label.config(font=new_font)
+        self.settings.set('scale', self.settings.get('scale'))
+
     def update_geometry(self, event):
-        self.set_font_size_to_fit_window()
+        #self.update_font_size()
+        #self.set_font_size_to_fit_window()
         if not self.settings.get('fullscreen'):
             self.settings.set('geometry', self.root.geometry())
 
     def increase_font_size(self, event=None):
-        self.settings.set('scale', min(self.settings.get('scale') + 0.1, 1.0))
-        self.set_font_size_to_fit_window()
+        self.settings.set('scale', self.settings.get('scale') + 0.5)
+        self.update_font_size()
+        #self.set_font_size_to_fit_window()
 
     def decrease_font_size(self, event=None):
-        self.settings.set('scale', max(self.settings.get('scale') - 0.1, 0.1))
-        self.set_font_size_to_fit_window()
+        self.settings.set('scale', max(self.settings.get('scale') - 0.5, 0.1))
+        self.update_font_size()
+        #self.set_font_size_to_fit_window()
 
     def bind_events(self):
         self.root.bind("<plus>", self.increase_font_size)
