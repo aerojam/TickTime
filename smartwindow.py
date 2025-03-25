@@ -6,7 +6,6 @@ from settings import Settings
 
 class SmartWindow:
     def __init__(self):
-        #self.root = tk.Tk()
         self.root = tk.Toplevel()
         self.settings = Settings(self.__class__.__name__)
         self.root.title(self.settings.get("title"))

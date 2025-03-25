@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from clock import Clock
 from timer import Timer
-from count_down import CountDown
+from time_entry import TimeEntry
 
 class MainWindow():
     def __init__(self):
@@ -40,7 +40,7 @@ class MainWindow():
         timer_window = Timer()
 
     def open_count_down(self):
-        count_down_window = CountDown()
+        w = TimeEntry("00:00:03", prompt="Enter the count down time", title="TickTime")
 
     def exit_app(self):
         self.root.destroy()
